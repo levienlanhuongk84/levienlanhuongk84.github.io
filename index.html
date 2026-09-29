@@ -191,6 +191,8 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:899px){
+  /* Sidebar giữ nguyên dạng danh sách dọc (đúng ảnh mẫu) kể cả trên điện thoại — không gập thành
+     thanh tab ngang. Rail nằm trên như một khối hero, nội dung cuộn tiếp bên dưới. */
   .shell{flex-direction:column}
   .rail{width:100%;height:auto;position:relative;overflow:hidden}
   .rail:before{display:none}
@@ -199,16 +201,6 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
   .brand-logo{width:110px}
   .divider{margin:8px 0 6px;max-width:180px}
   .rail-head h1{font-size:23px}
-  .rail-nav{flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:12px 14px 14px;gap:8px;scrollbar-width:none}
-  .rail-nav::-webkit-scrollbar{display:none}
-  .rail-item-wrap{flex:none;border-radius:12px}
-  .rail-item-wrap.on:after{display:none}
-  .rail-item{white-space:nowrap;padding:8px 12px;gap:8px;border-radius:12px}
-  .rail-item .num{width:26px;height:26px;border-radius:8px;font-size:13px}
-  .rail-item .lbl{font-size:15px;max-width:160px}
-  .rail-item .cnt,.rail-item .chev{display:none}
-  .rail-sub{display:none}
-  .rail-foot{display:none}
 }
 @media (max-width:640px){
   .wrap{padding:0 16px}
