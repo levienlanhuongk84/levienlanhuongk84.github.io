@@ -297,6 +297,37 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
 @media (max-width:900px){
   .shell{flex-direction:column}
 }
+
+/* Overview flowchart */
+body.ov .topbar{display:none}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 0 24px}
+.fl-root{border:0;cursor:default;text-align:center;color:#fff;font-family:inherit;border-radius:16px;padding:14px 26px;background:linear-gradient(135deg,var(--purple),var(--purple-2));box-shadow:var(--shadow)}
+.fl-root b{display:block;font-size:18px;font-weight:700}
+.fl-root small{display:block;margin-top:2px;font-size:13px;opacity:.85}
+.fl-stem{width:2px;height:22px;background:var(--line-2)}
+.fl-sections{position:relative;width:100%;display:grid;grid-template-columns:1fr;gap:18px;padding-top:0}
+.fl-sections:before{content:"";display:block;position:absolute;top:0;left:calc(100%/(var(--cols,5)*2));right:calc(100%/(var(--cols,5)*2));border-top:2px solid var(--line-2)}
+.fl-sec{position:relative;display:flex;flex-direction:column;gap:10px}
+.fl-sec:before{content:"";position:absolute;top:-20px;left:50%;height:20px;border-left:2px solid var(--line-2)}
+.fl-sec-h{align-self:center;font-size:12px;font-weight:700;letter-spacing:.14em;color:#fff;border-radius:999px;padding:4px 14px;background:var(--sc,var(--purple))}
+.fl-sec[data-sec="CLASSES"]{--sc:#613087}.fl-sec[data-sec="EXAM PREP"]{--sc:#b4441a}.fl-sec[data-sec="SKILLS"]{--sc:#0d6b63}.fl-sec[data-sec="RESULTS"]{--sc:#ad1f45}.fl-sec[data-sec="TEACHERS"]{--sc:#7d5100}
+.fl-grp{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--sc,var(--purple));border-radius:12px;padding:10px 12px 8px}
+.fl-gn{display:flex;justify-content:space-between;align-items:baseline;width:100%;border:0;background:transparent;cursor:pointer;padding:0 0 6px;font-family:inherit;color:var(--ink);text-align:left}
+.fl-gn b{font-size:15px}.fl-gn span{font-size:12px;color:var(--muted)}
+.fl-gn:hover b{text-decoration:underline}
+.fl-blks{list-style:none;margin:0;padding:0 0 0 10px;border-left:2px solid var(--line)}
+.fl-blks li{margin:0}
+.fl-blks button{display:flex;justify-content:space-between;gap:8px;width:100%;border:0;background:transparent;cursor:pointer;padding:3px 0;font-family:inherit;font-size:13px;color:var(--ink);text-align:left}
+.fl-blks button:hover{color:var(--accent);text-decoration:underline}
+.fl-blks i{font-style:normal;font-size:12px;color:var(--muted);flex:none}
+.fl-route{margin-top:26px;width:100%;background:var(--card);border:1px dashed var(--line-2);border-radius:14px;padding:14px 18px}
+.fl-route h3{margin:0 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.fl-route ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:6px 22px;font-size:13.5px}
+.fl-route li b{color:var(--ink)}
+@media (min-width:1100px){
+  .fl-sections{grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));padding-top:20px;gap:14px}
+}
+@media (max-width:1099px){.fl-sections:before,.fl-sec:before{display:none}.fl-stem{height:14px}}
 @media (max-width:640px){
   .wrap{padding:0 16px}
   .topbar-row{flex-wrap:wrap;gap:8px}
@@ -410,12 +441,40 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
       mine.forEach(function(c){types[c.type]=1;nLinks+=c.eds.length;if(c.gv)nTeacher++;else nItems++;});
     });
     $('groups').innerHTML=html.join('');
-    var LAB={ck1:'CLASSES',ch:'CLASSES',life:'CLASSES',vstep:'EXAM PREP',ielts:'EXAM PREP',writing:'SKILLS',speaking:'SKILLS',results:'RESULTS',gv:'TEACHERS'},lastLab=null;
+    var LAB={ck1:'CLASSES',ch:'CLASSES',life:'CLASSES',vstep:'EXAM PREP',ielts:'EXAM PREP',writing:'SKILLS',speaking:'SKILLS',results:'RESULTS',gv:'TEACHERS',overview:'OVERVIEW'},lastLab=null;
+    var FLOWICON='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/><path d="M12 7v4M5 16v-5h14v5"/></svg>';
+    (function(){
+      var secs=[];
+      navItems.forEach(function(it){
+        var lab=LAB[it.id]||'OTHER',sc=secs.filter(function(x){return x.lab===lab;})[0];
+        if(!sc){sc={lab:lab,gs:[]};secs.push(sc);}
+        var sec=document.getElementById('grp-'+it.id);
+        var blks=[].slice.call(sec.querySelectorAll(':scope > .blk, :scope > .course')).map(function(b){return{id:b.id,t:b.querySelector('h3').textContent,n:b.querySelectorAll('.card').length};});
+        sc.gs.push({id:it.id,short:it.short,n:sec.querySelectorAll('.card').length,blks:blks});
+      });
+      var h='<section class="group ov-sec" id="grp-overview"><div class="group-head"><h2>Overview</h2><p class="gsub">Flowchart of the whole hub: click any box to jump to that sheet or block</p><span class="gcount"></span></div><div class="flow">'
+        +'<div class="fl-root"><b>'+esc(document.title)+'</b><small>'+nItems+' materials · '+nTeacher+' teacher versions · '+nLinks+' links</small></div><div class="fl-stem"></div>'
+        +'<div class="fl-sections" style="--cols:'+secs.length+'">'
+        +secs.map(function(sc){return '<div class="fl-sec" data-sec="'+esc(sc.lab)+'"><div class="fl-sec-h">'+esc(sc.lab)+'</div>'
+          +sc.gs.map(function(g){return '<div class="fl-grp"><button type="button" class="fl-gn" data-go="'+esc(g.id)+'"><b>'+esc(g.short)+'</b><span>'+pl(g.n)+'</span></button>'
+            +'<ul class="fl-blks">'+g.blks.map(function(b){return '<li><button type="button" data-go="'+esc(g.id)+'" data-to="'+esc(b.id)+'"><span>'+esc(b.t)+'</span><i>'+b.n+'</i></button></li>';}).join('')+'</ul></div>';}).join('')+'</div>';}).join('')
+        +'</div>'
+        +'<div class="fl-route"><h3>Where a new link goes</h3><ul>'
+        +'<li><b>Lesson · Review test · Mock test</b> → class sheet (CK1 / CH / Life Pre-Int), block = Unit</li>'
+        +'<li><b>Writing guides and practice</b> → Writing (Theory &amp; guides, Practice)</li>'
+        +'<li><b>Oral tests</b> → Speaking, block = class</li>'
+        +'<li><b>Marked-writing results</b> → Results, block = class</li>'
+        +'<li><b>Vietnamese and bilingual teacher versions</b> → Teachers, block = course</li>'
+        +'<li><b>Handbooks and IELTS library</b> → the class or IELTS sheet, General materials</li>'
+        +'</ul></div></div></section>';
+      $('groups').insertAdjacentHTML('afterbegin',h);
+      navItems.unshift({id:'overview',short:'Overview',teacher:false,num:'',units:[]});
+    })();
     $('rail-nav').innerHTML=navItems.map(function(it){
       var lab=LAB[it.id]||'OTHER',pre=lab!==lastLab?'<div class="rail-group" role="presentation">'+lab+'</div>':'';lastLab=lab;
       return pre+'<div class="rail-item" role="presentation" data-group="'+esc(it.id)+'">'
         +'<button type="button" class="rail-btn'+(it.teacher?' teacher':'')+'" id="rt-'+esc(it.id)+'" role="tab" data-group="'+esc(it.id)+'" aria-selected="false">'
-        +'<span class="idx">'+it.num+'</span><span class="lbl">'+esc(it.short)+'</span><span class="cnt"></span></button>'
+        +'<span class="idx">'+(it.id==='overview'?FLOWICON:it.num)+'</span><span class="lbl">'+esc(it.short)+'</span><span class="cnt"></span></button>'
         +'<ul class="sub-outline" id="rs-'+esc(it.id)+'" hidden></ul></div>';
     }).join('');
     $('chips').innerHTML='<button class="chip" type="button" data-type="all" aria-pressed="true">All <span class="n"></span></button>'
@@ -444,7 +503,7 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
     function setActive(gid,opts){
       opts=opts||{};
       if(!document.getElementById('grp-'+gid))return;
-      active=gid;
+      active=gid;document.body.classList.toggle('ov',gid==='overview');
       document.querySelectorAll('.group').forEach(function(g){g.hidden=(g.id!=='grp-'+gid);});
       tabs.forEach(function(t){var on=t.dataset.group===gid;t.setAttribute('aria-selected',String(on));var w=t.closest('.rail-item');if(w)w.classList.toggle('active',on);});
       requestAnimationFrame(function(){
@@ -484,10 +543,10 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
           u.hidden=!n;var b=u.querySelector('.blk-n');if(b)b.textContent=pl(n);
         });
         var n=scope.querySelectorAll('.card:not([hidden])').length;
-        scope.querySelector('.gcount').textContent=pl(n);
+        scope.querySelector('.gcount').textContent=active==='overview'?'':pl(n);
       }
-      tabs.forEach(function(t){var g=document.getElementById('grp-'+t.dataset.group);t.querySelector('.cnt').textContent=g?pl(g.querySelectorAll('.card').length):'';});
-      $('empty').hidden=total>0;
+      tabs.forEach(function(t){var g=document.getElementById('grp-'+t.dataset.group);t.querySelector('.cnt').textContent=(g&&t.dataset.group!=='overview')?pl(g.querySelectorAll('.card').length):'';});
+      $('empty').hidden=total>0||active==='overview';
     }
 
     tabs.forEach(function(t){t.addEventListener('click',function(){setActive(t.dataset.group,{scroll:true});});});
@@ -502,7 +561,7 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
 
     var initial=(initialHash&&document.getElementById('grp-'+initialHash))?initialHash:null;
     if(!initial){try{var saved=localStorage.getItem(POSKEY);if(saved&&document.getElementById('grp-'+saved))initial=saved;}catch(e){}}
-    if(!initial&&navItems.length)initial=navItems[0].id;
+    if(!initial&&navItems.length)initial=navItems.filter(function(x){return x.id!=='overview';})[0].id;
     if(initial)setActive(initial,{silent:true});
 
     document.addEventListener('keydown',function(e){
@@ -511,6 +570,11 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
     });
   }
 
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.flow [data-go]');if(!b)return;
+    var tab=$('rt-'+b.dataset.go);if(!tab)return;tab.click();
+    var to=b.dataset.to;if(to)setTimeout(function(){var t=$(to);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});},120);
+  });
   var toast=$('toast'),tt;
   function say(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show');},1800);}
   function fallbackCopy(text){
