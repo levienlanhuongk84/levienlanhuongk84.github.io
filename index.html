@@ -187,11 +187,11 @@ button{font:inherit;color:inherit}
   .rail-btn .lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rail-btn .cnt{flex:none;font-size:.8em;font-weight:400;color:rgba(214,197,236,.75)}
   .rail-btn[aria-selected="true"] .cnt{color:#FFE39A}
-  .rail-foot{flex:none;border-top:0;padding:4px 14px 18px;font-size:1em;color:#E5D9EF}
-  .stats{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-  .stats li{display:inline-flex;align-items:center;gap:7px;background:rgba(168,124,222,.14);border:1px solid rgba(196,160,240,.20);border-radius:13px;padding:6px 11px;font-size:.78em;color:#EDE3F7}
-  .stats li svg{width:18px;height:18px;flex:none;color:#CBB6E6}
-  .stats b{font-weight:700;font-size:1.25em;color:#FBC965;font-variant-numeric:tabular-nums}
+  .rail-foot{flex:none;border-top:0;padding:2px 14px 14px;font-size:1em;color:#E5D9EF}
+  .stats{list-style:none;margin:0;padding:0;display:flex;flex-wrap:nowrap;gap:6px}
+  .stats li{display:inline-flex;align-items:center;gap:4px;background:rgba(168,124,222,.14);border:1px solid rgba(196,160,240,.20);border-radius:10px;padding:3px 8px;font-size:.62em;white-space:nowrap;color:#EDE3F7}
+  .stats li svg{width:12px;height:12px;flex:none;color:#CBB6E6}
+  .stats b{font-weight:700;font-size:1.1em;color:#FBC965;font-variant-numeric:tabular-nums}
   /* Hub trên điện thoại: giữ thanh bên DẠNG DỌC (yêu cầu 06/10/2026), ghi đè quy tắc thanh tab ngang của kit. */
   @media (max-width:900px){
     .rail,:root[data-theme="dark"] .rail{position:relative;top:auto;z-index:auto;width:100%;height:auto;flex-direction:column;align-items:stretch;overflow:hidden;
@@ -423,7 +423,7 @@ footer .wrap{padding-top:18px;padding-bottom:28px;display:flex;flex-wrap:wrap;ga
     var SI={book:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.3 5 7.8 4.5 4 4.5v13c3.8 0 6.3.5 8 2 1.7-1.5 4.2-2 8-2v-13c-3.8 0-6.3.5-8 2z"/><path d="M12 6.5v13"/></svg>',
       people:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M6.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/><circle cx="5.5" cy="10" r="2.2"/><path d="M2 17.5c.4-2 1.8-3 3.5-3"/><circle cx="18.5" cy="10" r="2.2"/><path d="M22 17.5c-.4-2-1.8-3-3.5-3"/></svg>',
       link:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg>'};
-    $('stats').innerHTML='<li>'+SI.book+'<b>'+nItems+'</b>materials</li>'+(nTeacher?'<li>'+SI.people+'<b>'+nTeacher+'</b>teacher versions</li>':'')+'<li>'+SI.link+'<b>'+nLinks+'</b>links</li>';
+    $('stats').innerHTML='<li>'+SI.book+'<b>'+nItems+'</b>materials</li>'+(nTeacher?'<li>'+SI.people+'<b>'+nTeacher+'</b>teacher</li>':'')+'<li>'+SI.link+'<b>'+nLinks+'</b>links</li>';
     wire(navItems);
   }
 
